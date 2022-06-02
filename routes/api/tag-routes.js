@@ -8,7 +8,9 @@ router.get('/', (req, res) => {
   // be sure to include its associated Product data
   Tag.findAll({
     include: [{
-      model: Product
+      model: Product,
+      through: ProductTag,
+      as: 'product_tags'
     }]
   })
   .then(dbTagData => res.json(dbTagData))
@@ -26,7 +28,9 @@ router.get('/:id', (req, res) => {
       id: req.params.id
     },
     include: [{
-      model: Product
+      model: Product,
+      through: ProductTag,
+      as: 'product_tags'
     }]
   })
   .then(dbTagData => {
@@ -56,7 +60,7 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
-  Post.update(
+  Tag.update(
     {
       tag_name: req.body.tag_name
     },
